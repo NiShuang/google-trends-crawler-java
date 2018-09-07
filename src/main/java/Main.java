@@ -5,6 +5,8 @@ import net.dongliu.requests.Requests;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,6 +110,17 @@ public class Main {
     public static void main(String[] args) {
         Main m = new Main();
         String[] keyList = new String[]{"insta360", "samsung gear 360", "theta s", "Giroptic", "GoPro Fusion"};
-        System.out.println(m.getTrend(keyList, "2018-08-07", "2018-09-07"));
+        Calendar today = Calendar.getInstance();
+        int month = (today.get(Calendar.MONTH) + 10) % 12 +1;
+        int year = today.get(Calendar.YEAR) - month / 12;
+        Calendar before = Calendar.getInstance();
+        before.set(Calendar.YEAR, year);
+        before.set(Calendar.MONTH, month);
+        int day = Math.min(today.get(Calendar.DAY_OF_MONTH), before.getActualMaximum(Calendar.DAY_OF_MONTH));
+        before.set(Calendar.DAY_OF_MONTH, day);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// 设置你想要的格式
+
+
+        System.out.println(m.getTrend(keyList, df.format(before.getTime()), df.format(today.getTime())));
     }
 }
